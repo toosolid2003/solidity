@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity >=0.7.0 < 0.0.9;
+pragma solidity ^0.8.4;
 
 /// @title Vote avec delegation
 contract Ballot {
@@ -33,10 +33,10 @@ contract Ballot {
     constructor(bytes32[] memory proposalNames) {
         president = msg.sender;
         voters[president].weight = 1;
-    }
+    
 
-    // Pour chacun des noms de proposition fournis, creer un nouvel objet
-    // de proposition et l'ajouter a la fin du tableau
+        // Pour chacun des noms de proposition fournis, creer un nouvel objet
+        // de proposition et l'ajouter a la fin du tableau
 
         for (uint i = 0; i < proposalNames.length; i++ )   {
             // 'Proposal({...}) cree un objet temporaire de proposition et 'proposal.push()'
@@ -46,16 +46,17 @@ contract Ballot {
                 voteCount: 0
             }));
         }
+    }
     
     // Donne a 'voter' le droit de voter sur ce bulletin de vote.
     // Ne peut etre appele president
 
-    function giveRightToVote(address, voter) external {
+    function giveRightToVote(address voter) external {
 
         // Si le premier argument de 'require' est false, l'execution de termine et toutes les
         // modifications de l'etat et des soldes Ether sont annulees. 
         require(
-            msg.sender = president,
+            msg.sender == president,
             "Seul le president peut donner le droit de vote"
         );
         require(
@@ -68,21 +69,39 @@ contract Ballot {
         voters[voter].weight = 1;
     }
 
+    // function giveRightToAllVoter(address voter) external {
+
+    //     // Si le premier argument de 'require' est false, l'execution de termine et toutes les
+    //     // modifications de l'etat et des soldes Ether sont annulees. 
+    //     require(
+    //         msg.sender == president,
+    //         "Seul le president peut donner le droit de vote"
+    //     );
+
+    //     // Boucle qui parcours l'array 'voters' et leur assigne un droit de vote
+    //     // a la condition qu'ils n'aient pas deja vote
+    //     for (uint v = 0; v < voters.length; v++)
+    //     require(voters[voter].weight == 0);
+
+    //     voters[voter].weight = 1;
+    // }
+
+
     // Delegation du vote au votant 'to'
     function delegate (address to) external {
         // attribue une reference
 
         Voter storage sender = voters[msg.sender];
 
-        require(!sender.voted, "Vous avez deja vote")
-        require(to != msg.sender, "Autodelegation interdite, coquin!")
+        require(!sender.voted, "Vous avez deja vote");
+        require(to != msg.sender, "Autodelegation interdite, coquin!");
 
         while (voters[to].delegate != address(0))   {
             to = voters[to].delegate;
 
             require(to != msg.sender, "Found Loop in delegation");
 
-        // Puisque sender est une reference, cela modifie 'voters[msg.sender].voted
+        // Puisque sender est une reference, cela modifie 'voters[msg.sender].voted'
         sender.voted = true;
         sender.delegate = to;
         Voter storage delegate_ = voters[to];
