@@ -72,29 +72,6 @@ contract Ballot {
         voters[voter].weight = 1;
     }
 
-    function giveRightToAllVoter(address voter) external {
-
-        // Si le premier argument de 'require' est false, l'execution de termine et toutes les
-        // modifications de l'etat et des soldes Ether sont annulees. 
-        require(
-            msg.sender == president,
-            "Seul le president peut donner le droit de vote"
-        );
-
-        // Boucle qui parcours l'array 'keys' et leur assigne un droit de vote
-        // a la condition qu'ils n'aient pas deja vote
-        for (uint v = 0; v < keys.length; v++)  {
-            address voterAddress = keys[v];
-            require(voters[voterAddress].weight == 0, "Voter already initialized");
-            voters[voterAddress].weight = 1;
-        }
-
-
-
-
-
-        voters[voter].weight = 1;
-    }
 
 
     // Delegation du vote au votant 'to'
