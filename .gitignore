@@ -5,6 +5,12 @@ node_modules
 /cache
 /artifacts
 /contracts
+/ignition
+/test
+hardhat.config.ts
+package-lock.json
+package.json
+
 
 # TypeChain files
 /typechain

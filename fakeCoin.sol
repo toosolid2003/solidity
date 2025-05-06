@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.4;
+import "node_modules/hardhat/console.sol";
 
 contract Coin   {
     // Mot-cle "public" pour rendre variable accessible depuis d'autres contrats
@@ -16,6 +17,7 @@ contract Coin   {
     function mint(address receiver, uint amount) public {
         require(msg.sender == minter);
         balances[receiver] += amount;
+        console.log("Money has been minted");
     }
 
     error InsufficientBalance(uint requested, uint available);
@@ -28,7 +30,11 @@ contract Coin   {
         });
 
         balances[msg.sender] -= amount;
+        console.log("Sender's account updated");
+
         balances[receiver] += amount;
+        console.log("Receiver's account updated");
+
         emit Sent(msg.sender, receiver, amount);
     }
 }
