@@ -23,7 +23,8 @@ contract Ownable    {
 
 contract secureStore is Ownable {
     function withdraw() onlyOwner() public payable {
-        payable(owner).transfer(msg.value);
+        (bool sent,) = payable(owner).call{value:msg.value}("");
+        require(sent,"Transfer failed");
     }
 }
 
