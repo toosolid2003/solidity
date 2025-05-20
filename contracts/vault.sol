@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.4;
-// import "node_modules/hardhat/console.sol";
 
-contract Vault  {
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+
+contract Vault is ReentrancyGuard  {
     address owner;
 
     event Deposit(address contributor, uint amount);
@@ -23,7 +24,7 @@ contract Vault  {
     }
 
     // Withdraw: only owner can withdraw
-    function withdraw() public onlyOwner()  {
+    function withdraw() public onlyOwner() nonReentrant {
 
         uint256 contractBalance = address(this).balance;
         (bool _sent,) = payable(owner).call{value: contractBalance}("");
@@ -33,9 +34,10 @@ contract Vault  {
 
     // Deposit: public function, anyone can contribute
     // this one needs to be called explicitly
-    function deposit() external payable whenNotPaused {
+    function deposit() external payable whenNotPaused nonReentrant {
         require(msg.value > 0, "Must contain ethers");
-        require(msg.value <= 2 ether);
+        require(msg.value <= 2 ether, "Deposit value too high");
+
         emit Deposit(msg.sender, msg.value);
     }
 
