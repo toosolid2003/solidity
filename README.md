@@ -50,8 +50,8 @@ The vault contract implements several security measures:
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/ethereum-vault.git
-   cd ethereum-vault
+   git clone https://github.com/toosolid2003/vault.git
+   cd vault
    ```
 
 2. Install dependencies:
@@ -84,7 +84,7 @@ Run the full test suite with:
 npx hardhat test
 ```
 
-## Deployment
+<!-- ## Deployment
 
 ### Local Testing Deployment
 
@@ -104,7 +104,7 @@ npx hardhat run scripts/deploy.js --network localhost
 3. Deploy to a testnet (e.g., Goerli):
    ```
    npx hardhat run scripts/deploy.js --network goerli
-   ```
+   ``` -->
 
 ## License
 
